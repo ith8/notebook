@@ -57,3 +57,43 @@
 	(t '(you cannot get that.))))
 (defun inventory ()
   (cons 'items- (objects-at 'body *objects* *object-locations*)))
+
+;; Repl
+(defun game-repl()
+  (let ((cmd (game-read))) ;store user command in cmd
+    (unless (eq (car cmd) 'quit)
+      (game-print (game-eval cmd))
+      (game-repl))))
+
+(defun game-read() ;turns user input into commands
+  (let ((cmd (read-from-string (concatenate 'string "(" (read-line) ")")))) ;wrap input with ()
+    (flet ((quote-it (x)
+		     (list 'quote x))) ;add quote to commands arguments
+      (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
+
+(defparameter *allowed-commands* '(look walk pickup inventory)) ;game-eval only commands
+(defun game-eval (sexp)
+  (if (member (car sexp) *allowed-commands*)
+    (eval sexp)
+    '(i do not know that command.)))
+
+(defun tweak-text (lst caps lit)
+  (when lst ;alter until reach last char
+    (let ((item (car lst))
+	  (rest (cdr lst)))
+      (cond ((eq item #\space) (cons item (tweak-text rest caps lit))) ;move on, don't alter if space
+	    ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit))) ;detect start of sentence, don't alter caps
+	    ((eql item #\") (tweak-text rest caps (not lit)))
+	    (lit (cons item (tweak-text rest nil lit))) ;treat as literal, don't alter caps.
+	    (caps (cons (char-upcase item) (tweak-text rest nil lit)))
+	    (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
+(defun game-print (lst)
+  (princ (coerce (tweak-text (coerce (string-trim "() "
+						  (prin1-to-string lst)) ;convirt symbols to string, no output
+				     'list) ;coercing string to list
+			     t
+			     nil) ;tweaking text
+		 'string)) ;back to string
+  (fresh-line))
+
+
