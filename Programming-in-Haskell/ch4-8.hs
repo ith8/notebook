@@ -5,7 +5,7 @@ luhnDouble n
   | otherwise = 2*n
 
 luhnTotal :: Int -> Int -> Int -> Int -> Int
-luhnTotal x y z w = luhnDouble x + luhnDouble y + luhnDouble z + luhnDouble w
+luhnTotal x y z w = luhnDouble x + y + luhnDouble z + w
 
 luhn :: Int -> Int -> Int -> Int -> Bool
 luhn x y z w
