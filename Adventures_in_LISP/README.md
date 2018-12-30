@@ -1,0 +1,1 @@
+Some of my earlier code for [Land of Lisp](http://landoflisp.com/), Conrad Barski.
