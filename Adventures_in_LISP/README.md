@@ -1,1 +1,1 @@
-Some of my earlier code for [Land of Lisp](http://landoflisp.com/), Conrad Barski.
+Some of my earlier code while working through [Land of Lisp](http://landoflisp.com/), Conrad Barski.
