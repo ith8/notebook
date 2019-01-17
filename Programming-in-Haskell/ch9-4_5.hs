@@ -3,7 +3,7 @@
 33665406
 
 -- original valid
-length [e | ns' <- choices [1,3,7,10,25,50], e <- exprs ns', eval e /= []]
+> length [e | ns' <- choices [1,3,7,10,25,50], e <- exprs ns', eval e /= []]
 4672540
 
 -- efficient valid
