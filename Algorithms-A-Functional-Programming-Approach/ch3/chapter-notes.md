@@ -1,3 +1,4 @@
+# The Efficiency of Functional Programs
 ## Strict evaluation
 Operator ($!) takes argument f and x: forces x to be evaluated fully before f is applied.
 
