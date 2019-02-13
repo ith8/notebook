@@ -1,0 +1,18 @@
+-- lengthT = n + 1 => O(n)
+-- sumT = n + 1 => O(n)
+-- headT => O(1)
+-- 
+-- a) lazy list
+-- lengthT => O(n)
+-- sumT => O(nm)
+-- headT => O(m)
+--
+--b) list with strict tail
+--lengthT => O(nm)
+--sumT => O(nm)
+--headT => O(nm)
+--
+--c) list with strict head
+--lengthT => O(n)
+--sumT => O(nm)
+--headT => O(m)
