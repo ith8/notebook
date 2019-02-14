@@ -3,9 +3,13 @@
 Operator ($!) takes argument f and x: forces x to be evaluated fully before f is applied.
 
 Operator (!) precedes a constructor makes that constructor strict.
-- data List a = Cons !a List a | Nil => All head of a list must be evaluated before its needed.
-- data List a = Cons a !(List a) | Nil => Forces the tail of the list to be fully evaluated. 
+```haskell
+-- All head of a list must be evaluated before its needed.
+data List a = Cons !a List a | Nil
 
+--Forces the tail of the list to be fully evaluated.
+data List a = Cons a !(List a) | Nil
+```
 ## Step-counting Analysis (Runtime)
 1. For each function f, derived a step-counting version Tf applied to the same arguments:
 - { f a1 a2 .. an = e} => {Tf a1 a2 .. an = 1 + T(e)}	, where T(e) is the cost of evaluating expression e; cost of the function call f is 1 unit of time + number of step required to evaluate function body.
@@ -16,7 +20,6 @@ Operator (!) precedes a constructor makes that constructor strict.
 - T(f a1 a2 .. an) => T(a1) + T(a2) .. + T(an) + Tf(a1 a2 .. an)
 2. For recursive functions, find the structural property that complexity depends upon, the size.
 3. Derived a closed expression in terms of input size based on step-counting functions T. Appendix B4
-
 ## Space Efficiency
 Two types of space analysis:
 - __Accumulated space analysis__: Cost of total of space units used if no garbage collection occurred.
@@ -26,7 +29,6 @@ Space leaks:
 - Memory space leaks away invisibly.
 - Memory used when it could've been avoided.
 - Memory remained referenced although it could've been garbage collected.
-
 ## Program Transformation
 __Burstall-Darlington Transformation system__
 
