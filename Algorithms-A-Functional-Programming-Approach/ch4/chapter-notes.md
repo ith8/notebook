@@ -27,7 +27,7 @@ ldt xs = (double . triple) xs
 
 --after deforestation
 ldt' [] = []
-ldt' (x:xs) = (6*x):(ldt xs)
+ldt' (x:xs) = (6*x):(ldt' xs)
 ```
 ## Removing Appends
 Avoid calls to the (++) operator.
