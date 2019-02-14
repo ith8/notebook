@@ -64,4 +64,6 @@ For binary trees:
 2. The minimum depth is d = ceiling (log2 (n+1)).
 3. if n = 2^k -1. A perfectly balanced tree has exactly 2^(k-1) leaves and 2^(k-1) - 1 interior nodes.
 
-Just as with lists, composing tree operators can be optimize with deforestation; Burstall-Darlington transformation can be used to avoid multiple traversals and (++) operators; duplicating memory can be avoid by labeling with (@) operator.  
+Just as with lists, composing tree operators can be optimize with deforestation; Burstall-Darlington transformation can be used to avoid multiple traversals and (++) operators; duplicating memory can be avoid by labeling with (@) operator.
+
+In case where the result of a tree traversal is needed for the second traversal, Bird [11] shows a technique to achieve the computation with a single traversal. 
