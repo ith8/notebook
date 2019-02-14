@@ -66,4 +66,4 @@ For binary trees:
 
 Just as with lists, composing tree operators can be optimize with deforestation; Burstall-Darlington transformation can be used to avoid multiple traversals and (++) operators; duplicating memory can be avoid by labeling with (@) operator.
 
-In case where the result of a tree traversal is needed for the second traversal, Bird [11] shows a technique to achieve the computation with a single traversal. 
+In cases where the result of a tree traversal is needed for the second traversal, Bird [11] shows a technique to achieve the computation with a single traversal. 
