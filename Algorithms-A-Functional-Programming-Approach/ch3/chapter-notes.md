@@ -30,7 +30,7 @@ Space leaks:
 - Memory used when it could've been avoided.
 - Memory remained referenced although it could've been garbage collected.
 ## Program Transformation
-__Burstall-Darlington Transformation system__
+__Burstall-Darlington Transformation system:__
 
 Transforming recursive programs to more time efficient versions with a series of equal-to-equal substitutions: 
 1. __Unfolding__: Substituting a function call for its body.
@@ -40,7 +40,7 @@ Transforming recursive programs to more time efficient versions with a series of
 5. __Abstraction__: Introduces local definition.
 6. Applying known laws for operators.
 
-__Tail recursivity optimization__
+__Tail recursivity optimization:__
 
 Increases space efficiency by using an accumulating parameter.
 
