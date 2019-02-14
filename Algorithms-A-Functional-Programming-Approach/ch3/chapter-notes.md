@@ -18,8 +18,13 @@ Operator (!) precedes a constructor makes that constructor strict.
 3. Derived a closed expression in terms of input size based on step-counting functions T. Appendix B4
 
 ## Space Efficiency
+Two types of space analysis:
 - __Accumulated space analysis__: Cost of total of space units used if no garbage collection occurred.
 - __Largest space analysis__: Cost is equal the largest amount of space units used during the reduction sequence. Garbage collection can be used.
+Space leaks:
+- Memory space leaks away invisibly.
+- Memory used when it could've been avoided.
+- Memory remained referenced although it could've been garbage collected.
 
 ## Program Transformation
 __Burstall-Darlington Transformation system__
