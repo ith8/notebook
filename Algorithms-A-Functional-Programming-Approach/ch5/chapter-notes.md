@@ -69,6 +69,7 @@ queEmpty :: Queue a -> Bool
 ```
 
 Queue implementation with single list: enqueue would take O(n) to insert item at the end of the list.
+
 Queue implementation with pair of list:
 - one representing the front
 - the other representing the rear in reverse order
