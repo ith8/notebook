@@ -117,7 +117,7 @@ module PQueue (PQueue, enPQ, dePQ, frontPQ, emptyPQ, pqEmpty) where
 enPQ :: (Ord a) => a -> PQueue a -> PQueue a
 dePQ :: (Ord a) => PQueue a -> PQueue a
 frontPQ :: (Ord a) => PQueue a -> a
-emptyPQ :: POueue a
+emptyPQ :: PQueue a
 pqEmpty :: PQueue a -> Bool
 ```
 
@@ -145,4 +145,135 @@ pqEmpty (PQ []) = True
 pqEmpty _ = False
 ```
 ## Sets
+A collection of distinct items in which:
+- an item can be tested for membership
+- an item can be inserted or deleted from the set
+- the number of distinct item is the size of the set
 
+ADT module:
+```haskell
+module Set (Set, inSet, addSet, delSet, emptySet, setEmpty) where
+
+inSet :: (Eq a) => a -> Set a -> Bool
+addSet :: (Eq a) => a -> Set a -> Set a
+delSet :: (Eq a) => a -> Set a -> Set a
+emptySet :: Set a
+setEmpty :: Set a -> Bool
+```
+
+Implementation with unordered list without duplicates:
+
+- `addset` takes O(n) steps
+- `delSet` does not need to traverse the whole set if there's no duplicate
+
+```haskell
+newtype Set a = St [a] deriving show
+
+inSet x (St xs) = elem x xs
+
+addSet x s@(St xs) | inSet x s = s
+		   | otherwise = St (x:xs)
+
+delSet x (St s) = St (delete x s)
+
+emptySet = St []
+
+setEmpty (St []) = True
+setEmpty _ = False
+```
+
+Displaying:
+
+```haskell
+instance (Show a) => Show (Set a) where
+    showsPrec _ (St s) str = showSet s str
+
+showSet [] str = showString "{}" str
+showSet (x:xs) str = showChar '{' (shows x (showl xs str))
+    where showl [] str = showChar '}' str
+	  showl (x:xs) str = showChar ',' (shows x (showl xs str))
+```
+
+## Tables
+Stores and retrieves values according to an index. 
+- implements a function of type `(b->a)` with a data structure instead of an algorithm
+- `newTable` takes a list of (index, value) pairs and returns a table
+
+```haskell
+module Table(Table,newTable,findTable,updTable) where
+
+newTable    :: (Eq b) => [(b,a)] -> Table a b
+findTable   :: (Eq b) => Table a b -> b -> a
+updTable    :: (Eq b) => (b,a) -> Table a b -> Table a b
+```
+
+Function implementation:
+
+- creates a new function whenever a new item x with index i is inserted.
+- such f' returns x for index i and f j for all other j.
+- `findTable` has smaller runtime for and index the more recent that index is updated. Worst case is linear time.
+
+```haskell
+newtype Table a b   = Tbl (b -> a)
+
+instance Show (Table a b) where
+    showsPrec _ _ str = showString "<<A Table>>" str
+
+    newTable assocs = foldr updTable (Tbl (\_ -> error "item not found in table")) assocs
+
+    findTable (Tbl f) i   = f i
+
+    updTable (i,x) (Tbl f) = Tbl g
+	where g j | j==i      = x
+		  | otherwise = f j
+```
+
+List implementation:
+
+- use association list
+- inefficient since `updTable` and `findTable` is linear in the worst case.
+- can improve by sorting the items but runtime remains linear in the worst case.
+
+```haskell
+newtype Table a b        = Tbl [(b,a)]
+    deriving Show
+
+    newTable   t          = Tbl t
+
+    findTable (Tbl []) i = error "item not found in table"
+    findTable (Tbl ((j,v):r)) i
+         | (i==j)        = v
+	 | otherwise     = findTable (Tbl r) i 
+
+    updTable e (Tbl [])         = (Tbl [e])
+    updTable e'@(i,_) (Tbl (e@(j,_):r))
+	 | (i==j)         = Tbl (e':r)
+	 | otherwise      = Tbl (e:r')
+	    where Tbl r' = updTable e' (Tbl r)
+
+```
+
+Array implementation:
+- restrict index to class `Ix`. 
+- no new values outside the initial boundary.
+- `newTable` determines the boundary by computing the min and max key of the association list.
+- efficiency depends on array implementation. At best, access takes constant time but array cannot be updated in place.
+
+```haskell
+newTable    :: (Ix b) => [(b,a)] -> Table a b
+findTable   :: (Ix b) => Table a b -> b -> a
+updTable    :: (Ix b) => (b,a) -> Table a b -> Table a b
+
+newtype Table a b     = Tbl (Array b a)
+    deriving Show
+
+    newTable l = Tbl (array (lo,hi) l)
+        where
+	    indices = map fst l
+	    lo      = minimum indices
+	    hi      = maximum indices
+
+    findTable (Tbl a) i      = a ! i
+
+    updTable p@(i,x) (Tbl a) = Tbl (a // [p])
+```
