@@ -29,7 +29,7 @@ Implementing `Stack` with lists using `newtype`:
 ```haskell
 newtype Stack a = Stk [a] deriving Show
 
-push x (Stack xs) = Stk (x:xs)
+push x (Stk xs) = Stk (x:xs)
 
 pop (Stk []) = error "empty stack"
 pop (Stk (_:xs)) = Stk xs
@@ -62,10 +62,10 @@ ADT module:
 module Queue (Queue, enqueue, dequeue, front, emptyQueue, queueEmpty) where
 
 enqueue :: a -> Queue a -> Queue a
-dequeue :: a -> Queue a -> Queue a
+dequeue :: PQueue a -> Queue a
 front :: Queue a -> a
 emptyQueue :: Queue a
-queEmpty :: Queue a -> Bool
+queueEmpty :: Queue a -> Bool
 ```
 
 Queue implementation with single list: enqueue would take O(n) to insert item at the end of the list.
@@ -126,7 +126,7 @@ List implementation:
 - `dePQ` takes O(1)
 
 ```haskell
-newtype PQueue a = PQ[a] deriving show
+newtype PQueue a = PQ[a] deriving Show
 
 enPQ x (PQ q) = PQ (insert x q)
     where insert x [] = [x]
